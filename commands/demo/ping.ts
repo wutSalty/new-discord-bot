@@ -1,19 +1,21 @@
-import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { CommandInteraction, CommandInteractionOptionResolver, SlashCommandBuilder } from 'discord.js';
 
-// module.exports = {
-//   data: new SlashCommandBuilder()
-//     .setName('ping')
-//     .setDescription('Replies with Pong!'),
+module.exports = {
+  cooldown: 5,
+  data: new SlashCommandBuilder()
+    .setName('ping')
+    .setDescription('Replies with Pong!')
+    .addStringOption(option =>
+      option.setName('input')
+        .setDescription('The input to echo back')
+        .setMaxLength(2000))
+    .addBooleanOption(option =>
+      option.setName('ephemeral')
+        .setDescription('Whether or not the echo should be ephemeral')),
 
-//   async execute(interaction: CommandInteraction) {
-//     await interaction.reply('Pong!');
-//   }
-// };
-
-export const data = new SlashCommandBuilder()
-  .setName('ping')
-  .setDescription('Replies with Pong!');
-
-export const execute = async (interaction: CommandInteraction) => {
-  await interaction.reply('Pong!');
+  async execute(interaction: CommandInteraction) {
+    const input = (<CommandInteractionOptionResolver>interaction.options).getString('input') ?? 'Pong!';
+    const ephemeral = (<CommandInteractionOptionResolver>interaction.options).getBoolean('ephemeral') ?? false;
+    await interaction.reply({ content: input, ephemeral: ephemeral });
+  },
 };
