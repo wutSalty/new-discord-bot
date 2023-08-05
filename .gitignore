@@ -1,5 +1,6 @@
 # User defined
 config.json
+.vscode
 
 # Logs
 logs
