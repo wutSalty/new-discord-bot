@@ -32,7 +32,9 @@ const refresh = async () => {
     console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
     await rest.put(
+      // This registers commands only on a specific server
       Routes.applicationGuildCommands(process.env.CLIENTID, process.env.GUILDID),
+      // This registers commands for all servers
       // Routes.applicationCommands(process.env.CLIENTID),
       { body: commands }
     );
